@@ -41,3 +41,11 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# crap i dont need
+*.jpg
+*.log
+*.txt
+check*
+base/
+build/
