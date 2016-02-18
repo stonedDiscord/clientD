@@ -6,7 +6,7 @@
 
 Global Form_3
 
-Global img12, char0, char1, char2, char3, char4, char5, char6, char7, char8, char9, char10, char11, char12, char13, char14, char15, char16, char17, char18, char19, img17, img30, img31, RxGIFAnimator1, RxGIFAnimator2, RxGIFAnimator3, RxGIFAnimator4, imgBG, Edit1, imgConnectMenu, OBJbutton, imgHoldit, imgTakeThat, Testimony, img11, img23, img22, img21, img25, img24, Label3, dbtxt2, mmo2, mmo1, lst2, ProgressBar1, Button7, edt3, CheckBox3, edt4, Button6, edt5, img14, Edit3
+Global img12, char0, char1, char2, char3, char4, char5, char6, char7, char8, char9, char10, char11, char12, char13, char14, char15, char16, char17, char18, char19, img17, img30, img31, RxGIFAnimator1, RxGIFAnimator2, RxGIFAnimator3, RxGIFAnimator4, imgBG, imgConnectMenu, OBJbutton, imgHoldit, imgTakeThat, Testimony, img11, img23, img22, img21, img25, img24, Label3, dbtxt2, mmo2, mmo1, lst2, ProgressBar1, Button7, edt3, CheckBox3, edt4, Button6, edt5, img14, Edit3, ListBox1, Edit1, TrackBar1
 
 Global Img_Form_3_0, Img_Form_3_1, Img_Form_3_2, Img_Form_3_3, Img_Form_3_4, Img_Form_3_5, Img_Form_3_6, Img_Form_3_7, Img_Form_3_8, Img_Form_3_9, Img_Form_3_10, Img_Form_3_11, Img_Form_3_12, Img_Form_3_13, Img_Form_3_14, Img_Form_3_15
 
@@ -30,7 +30,7 @@ Img_Form_3_14 = LoadImage(#PB_Any,"base\misc\panel.png")
 Img_Form_3_15 = LoadImage(#PB_Any,"base\misc\charselect.png")
 
 
-Procedure OpenForm_3(x = 400, y = 50, width = 518, height = 708)
+Procedure OpenForm_3(x = 400, y = 50, width = 520, height = 700)
   Form_3 = OpenWindow(#PB_Any, x, y, width, height, "Attorney Online", #PB_Window_SystemMenu | #PB_Window_MinimizeGadget)
   SetWindowColor(Form_3, RGB(128,128,128))
   img12 = ImageGadget(#PB_Any, 0, -8, 520, 720, ImageID(Img_Form_3_0))
@@ -91,8 +91,6 @@ Procedure OpenForm_3(x = 400, y = 50, width = 518, height = 708)
   HideGadget(RxGIFAnimator4, 1)
   imgBG = ImageGadget(#PB_Any, 0, 192, 256, 147, ImageID(Img_Form_3_13))
   HideGadget(imgBG, 1)
-  Edit1 = StringGadget(#PB_Any, 2, 193, 252, 19, "")
-  HideGadget(Edit1, 1)
   imgConnectMenu = ImageGadget(#PB_Any, 0, 0, 520, 720, ImageID(Img_Form_3_10))
   HideGadget(imgConnectMenu, 1)
   OBJbutton = ImageGadget(#PB_Any, 90, 291, 76, 28, ImageID(Img_Form_3_5))
@@ -112,10 +110,12 @@ Procedure OpenForm_3(x = 400, y = 50, width = 518, height = 708)
   img24 = ImageGadget(#PB_Any, 164, 103, 116, 32, ImageID(Img_Form_3_4))
   Label3 = TextGadget(#PB_Any, 123, 114, 305, 36, "")
   HideGadget(Label3, 1)
+  SetGadgetColor(Label3, #PB_Gadget_FrontColor,RGB(255,128,0))
+  SetGadgetColor(Label3, #PB_Gadget_BackColor,RGB(0,0,0))
   dbtxt2 = TextGadget(#PB_Any, 343, 106, 157, 17, "Offline", #PB_Text_Center)
   SetGadgetColor(dbtxt2, #PB_Gadget_FrontColor,RGB(248,248,248))
   SetGadgetColor(dbtxt2, #PB_Gadget_BackColor,RGB(47,41,39))
-  mmo2 = EditorGadget(#PB_Any, -3, 459, 520, 202, #PB_Editor_WordWrap)
+  mmo2 = EditorGadget(#PB_Any, 0, 460, 520, 200, #PB_Editor_WordWrap)
   SetGadgetColor(mmo2, #PB_Gadget_BackColor,RGB(139,139,139))
   mmo1 = EditorGadget(#PB_Any, 336, 124, 175, 247, #PB_Editor_WordWrap)
   SetGadgetColor(mmo1, #PB_Gadget_FrontColor,RGB(255,255,255))
@@ -126,11 +126,11 @@ Procedure OpenForm_3(x = 400, y = 50, width = 518, height = 708)
   HideGadget(ProgressBar1, 1)
   Button7 = ButtonGadget(#PB_Any, 414, 324, 57, 22, "Call Mod")
   HideGadget(Button7, 1)
-  edt3 = StringGadget(#PB_Any, 87, 661, 430, 21, "")
+  edt3 = StringGadget(#PB_Any, 90, 660, 430, 23, "")
   SetGadgetColor(edt3, #PB_Gadget_BackColor,RGB(87,87,87))
   CheckBox3 = CheckBoxGadget(#PB_Any, 145, 325, 71, 17, "Guard")
   HideGadget(CheckBox3, 1)
-  edt4 = StringGadget(#PB_Any, 0, 661, 90, 21, "Name")
+  edt4 = StringGadget(#PB_Any, 0, 660, 90, 23, "Name")
   SetGadgetColor(edt4, #PB_Gadget_BackColor,RGB(87,87,87))
   Button6 = ButtonGadget(#PB_Any, 234, 210, 75, 25, "Cancel")
   HideGadget(Button6, 1)
@@ -138,8 +138,14 @@ Procedure OpenForm_3(x = 400, y = 50, width = 518, height = 708)
   HideGadget(edt5, 1)
   img14 = ImageGadget(#PB_Any, 264, 268, 230, 50, ImageID(Img_Form_3_14))
   HideGadget(img14, 1)
-  Edit3 = StringGadget(#PB_Any, 490, 319, 224, 21, "~Search Music Name There~")
+  Edit3 = StringGadget(#PB_Any, 500, 322, 200, 21, "~Search Music Name There~")
   HideGadget(Edit3, 1)
+  ListBox1 = ListViewGadget(#PB_Any, 500, 343, 224, 360)
+  HideGadget(ListBox1, 1)
+  Edit1 = StringGadget(#PB_Any, 2, 193, 252, 19, "")
+  HideGadget(Edit1, 1)
+  TrackBar1 = TrackBarGadget(#PB_Any, 216, 324, 181, 25, 0, 100)
+  HideGadget(TrackBar1, 1)
 EndProcedure
 
 Procedure Form_3_Events(event)
@@ -160,7 +166,7 @@ EndProcedure
 
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 160
-; FirstLine = 13
+; CursorPosition = 146
+; FirstLine = 117
 ; Folding = -
 ; EnableXP

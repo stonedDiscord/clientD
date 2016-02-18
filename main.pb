@@ -38,8 +38,11 @@ EndStructure
 #C1 = 53761
 #C2 = 32618
 #BufferSize = 2048
+#server=3
+#master=5
 Global ClientID
 Global MasterID
+Global chatmode=#master
 Global version$="1.7.5"
 Global decryptor$="33"
 Global key=2
@@ -66,8 +69,8 @@ CompilerIf #PB_Compiler_Debugger=0
   OnErrorGoto(?start)
 CompilerEndIf
 UsePNGImageDecoder()
-LoadFont(0,"Tahoma",11)
-LoadFont(1,"Tahoma",9)
+LoadFont(0,"Tahoma",10)
+LoadFont(1,"Tahoma",8)
 CreateImage(42,256,192,32,#PB_Image_Transparent )
 XIncludeFile "GIFanimation.pbi"
 Define.w a
@@ -78,6 +81,12 @@ If InitNetwork() = 0
     MessageRequester("clientD", "Can't initialize the network!",#MB_ICONERROR)
   CompilerEndIf
   End
+EndIf
+
+If InitMovie() = 0
+  CompilerIf #CONSOLE=0
+    MessageRequester("clientD", "Can't initialize sound!",#MB_ICONERROR)
+  CompilerEndIf
 EndIf
 
 ;- Include files
@@ -178,10 +187,9 @@ EndProcedure
 
 
 Procedure Redraw(anim)
-  If anim > ArraySize(Frames()) : a = 0 : EndIf
+  If anim > ArraySize(Frames()) : anim = 0 : EndIf
   
-  SetGadgetState(RxGifAnimator1,ImageID(0))
-  
+  SetGadgetState(RxGifAnimator1,ImageID(0))  
   
   SetGadgetState(RxGifAnimator2,ImageID(Frames(anim)\Image))
   
@@ -195,7 +203,7 @@ Procedure Redraw(anim)
     SetGadgetState(RxGifAnimator3,0)
   EndIf
   FreeImage(42)  
-CreateImage(42,256,192,32,#PB_Image_Transparent)
+  CreateImage(42,256,192,32,#PB_Image_Transparent)
   StartDrawing(ImageOutput(42))
   DrawingMode(#PB_2DDrawing_AlphaBlend)  
   DrawingFont(FontID(0))
@@ -212,21 +220,21 @@ CreateImage(42,256,192,32,#PB_Image_Transparent)
   DrawingFont(FontID(1))
   DrawText(6, 114,char$,RGBA(255,255,255,255),RGBA(0,0,0,0))  
   
-;   If TextWidth(text$)>250
-;     For i=1 To 255
-;       stext$=Left(text$,Len(text$)-i)
-;       If TextWidth(stext$)<250
-;         ntext$=Right(text$,i)
-;         Break
-;       EndIf
-;     Next
-;     
-;     DrawText(5, 132,stext$,RGBA(255,255,255,255),RGBA(0,0,0,0))
-;     DrawText(5, 145,ntext$,RGBA(255,255,255,255),RGBA(0,0,0,0))
-;   Else
-    
-    Debug text$
-;   EndIf          
+  ;   If TextWidth(text$)>250
+  ;     For i=1 To 255
+  ;       stext$=Left(text$,Len(text$)-i)
+  ;       If TextWidth(stext$)<250
+  ;         ntext$=Right(text$,i)
+  ;         Break
+  ;       EndIf
+  ;     Next
+  ;     
+  ;     DrawText(5, 132,stext$,RGBA(255,255,255,255),RGBA(0,0,0,0))
+  ;     DrawText(5, 145,ntext$,RGBA(255,255,255,255),RGBA(0,0,0,0))
+  ;   Else
+  
+  Debug text$
+  ;   EndIf          
   StopDrawing()
   SetGadgetState(RxGifAnimator4,ImageID(42))
 EndProcedure
@@ -417,7 +425,6 @@ EndProcedure
 
 Procedure HandleAOCommand(rawreceive$)
   Debug rawreceive$
-  StartProfiler()
   command$=StringField(rawreceive$,1,"#")
   Select command$
     Case "decryptor"
@@ -454,6 +461,10 @@ Procedure HandleAOCommand(rawreceive$)
       
     Case "DONE"
       ResizeWindow(Form_3,#PB_Ignore,#PB_Ignore,500,669)
+      ResizeGadget(mmo2,500,0,200,280)
+      ResizeGadget(edt3,500,280,200,21)
+      ResizeGadget(edt4,500,301,90,21)
+      HideGadget(mmo2,1)
       HideGadget(img25,1)
       HideGadget(img24,1)
       HideGadget(img23,1)
@@ -461,7 +472,6 @@ Procedure HandleAOCommand(rawreceive$)
       HideGadget(img21,1)
       HideGadget(dbtxt2,1)
       HideGadget(mmo1,1)
-      HideGadget(mmo2,1)
       HideGadget(edt3,1)
       HideGadget(edt4,1)
       HideGadget(img12,1)
@@ -510,6 +520,8 @@ Procedure HandleAOCommand(rawreceive$)
       HideGadget(imgTakeThat,0)      
       HideGadget(img14,0)
       HideGadget(Edit1,0)
+      HideGadget(Edit3,0)
+      HideGadget(ListBox1,0)
       HideGadget(img30,1)
       HideGadget(img31,1)
       HideGadget(char0,1)
@@ -533,7 +545,11 @@ Procedure HandleAOCommand(rawreceive$)
       HideGadget(char18,1)
       HideGadget(char19,1)
       HideGadget(img17,1)
-      HideGadget(edt5,0)
+      HideGadget(edt5,1)
+      HideGadget(mmo2,0)
+      HideGadget(edt3,0)
+      HideGadget(edt4,0)
+      HideGadget(TrackBar1,0)
       
     Case "BN"
       bg$=StringField(rawreceive$,2,"#")
@@ -568,6 +584,7 @@ Procedure HandleAOCommand(rawreceive$)
       For m=0 To 9
         AddElement(Music())
         Music()=StringField(rawreceive$,3+m*2,"#")
+        AddGadgetItem(ListBox1,Val(StringField(rawreceive$,2,"#"))+m,StringField(rawreceive$,3+m*2,"#"))
         SetGadgetState(ProgressBar1,CharCount+EvidenceCount+(Val(StringField(rawreceive$,2,"#"))+m))
         SetGadgetText(Label3,"Music: "+Str(m)+"/"+Str(MusicCount))
       Next
@@ -584,7 +601,8 @@ Procedure HandleAOCommand(rawreceive$)
         Characters(c)\taken=took
       Next
       
-    Case "MS"          
+    Case "MS"
+      StartProfiler()
       emote$=StringField(rawreceive$,3,"#")
       char$=StringField(rawreceive$,4,"#")
       emote2$=StringField(rawreceive$,5,"#")
@@ -616,12 +634,19 @@ Procedure HandleAOCommand(rawreceive$)
           bank=1
           wit=1
       EndSelect
-      Debug "base\characters\"+char$+"\(b)"+emote2$+".gif"
-      GIF_LoadFrames(Frames(),"base\characters\"+char$+"\(b)"+emote$+".gif")  
+      GIF_LoadFrames(Frames(),"base\characters\"+char$+"\(a)"+emote$+".gif")  
       Redraw(0)
+      StopProfiler()
       
+    Case "MC"
+      Debug "base\sounds\music\"+StringField(rawreceive$,2,"#")
+      If LoadMovie(1,"base\sounds\music\"+StringField(rawreceive$,2,"#"))
+        If IsMovie(1)
+          PlayMovie(1,0)
+        EndIf
+      EndIf
   EndSelect
-  StopProfiler()
+  
 EndProcedure
 
 Procedure HandleMasterCommand(rawreceive$)
@@ -799,19 +824,19 @@ Repeat
           EndIf
           
         Case char0
-          Debug "YUSS"
           If ClientID
             SendNetworkString(ClientID,EncodeCommand("CC")+"#"+Str(DemoPage*20)+"#%")
           EndIf
           
         Case char1
-          Debug "JUDE"
           If ClientID
             SendNetworkString(ClientID,EncodeCommand("CC")+"#"+Str(DemoPage*20+1)+"#%")
           EndIf
           
         Case char2
-          Debug "YIUSS"          
+          If ClientID
+            SendNetworkString(ClientID,EncodeCommand("CC")+"#"+Str(DemoPage*20+2)+"#%")
+          EndIf        
           
           
         Case img30
@@ -829,8 +854,14 @@ Repeat
       If EventMenu() = 15
         Select GetActiveGadget()
           Case edt3
-            If MasterID
-              SendNetworkString(MasterID,"CT#"+SendEscape(GetGadgetText(edt4))+"#"+SendEscape(GetGadgetText(edt3))+"#%")
+            If chatmode=#master
+              If MasterID
+                SendNetworkString(MasterID,"CT#"+SendEscape(GetGadgetText(edt4))+"#"+SendEscape(GetGadgetText(edt3))+"#%")
+              EndIf
+            ElseIf chatmode=#server
+              If ClientID
+                SendNetworkString(ClientID,"CT#"+SendEscape(GetGadgetText(edt4))+"#"+SendEscape(GetGadgetText(edt3))+"#%")
+              EndIf
             EndIf
             SetGadgetText(edt3,"")
         EndSelect
@@ -850,8 +881,8 @@ Until WEvent=#PB_Event_CloseWindow
 
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 68
-; FirstLine = 65
+; CursorPosition = 551
+; FirstLine = 516
 ; Folding = ---
 ; EnableXP
 ; EnableCompileCount = 0

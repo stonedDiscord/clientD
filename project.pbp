@@ -7,12 +7,12 @@
   <section name="data">
     <explorer view="" pattern="0"/>
     <log show="1"/>
-    <lastopen date="2016-02-17 02:33" user="Sven" host="SPC"/>
+    <lastopen date="2016-02-18 01:32" user="Sven" host="SPC"/>
   </section>
   <section name="files">
     <file name="Form3.pbf">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="951a6473f2a6a65f78bdbccf0ac05cfe"/>
+      <fingerprint md5="57985101d4b59882b66527b3129e3dc1"/>
     </file>
     <file name="GIFanimation.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
@@ -20,7 +20,7 @@
     </file>
     <file name="main.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="648095e44586e16976697a8838d70a8b"/>
+      <fingerprint md5="7dd1d8f37be242a3be12b75dd3c83bea"/>
     </file>
   </section>
   <section name="targets">
@@ -31,7 +31,7 @@
       <directory value="..\client\"/>
       <options thread="1" xpskin="1" debug="1"/>
       <icon enable="1">..\zettagood.ico</icon>
-      <compilecount enable="1" value="244"/>
+      <compilecount enable="1" value="263"/>
       <buildcount enable="1" value="3"/>
       <constants>
         <constant value="#CONSOLE=0" enable="1"/>
